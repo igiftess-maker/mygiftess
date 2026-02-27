@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giftess - Premium Customised Gift Hampers</title>
+    <meta name="description" content="Discover unique jewelry and beautiful gifts for your loved ones. Premium customised gift hampers for every occasion.">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">giftess</a>
+            
+            <nav class="nav">
+                <a href="/#categories" class="nav-link">Categories</a>
+                <a href="/#products" class="nav-link">Products</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+            </nav>
+            
+            <div class="header-actions">
+                <div id="auth-buttons" style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-outline" onclick="showLogin()">Login</button>
+                    <button class="btn btn-primary" onclick="showLogin()">Register</button>
+                </div>
+                
+                <div id="user-menu" style="display: none;">
+                    <span id="user-name">User</span>
+                    <button class="btn btn-outline" onclick="handleLogout()">Logout</button>
+                </div>
+                
+                <button class="icon-btn" onclick="showCart()">
+                    🛒
+                    <span class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Premium Gifts for Your Loved Ones</h1>
+            <p class="hero-subtitle">Discover Unique Jewelry & Beautiful Gifts</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary hero-btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">
+                    Shop Now
+                </button>
+                <button class="btn btn-secondary hero-btn-secondary" onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})">
+                    Explore
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="section">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            <div id="categories-grid" class="categories-grid">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section">
+        <div class="container">
+            <h2 class="section-title">Best Sellers</h2>
+            
+            <!-- Category Filters -->
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                <button class="btn btn-outline category-filter-btn active" data-category="all" onclick="filterByCategory('all')">
+                    All Products
+                </button>
+            </div>
+            
+            <!-- Products Grid -->
+            <div id="products-grid" class="products-grid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" style="background: var(--bg-gray);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
+                    <h3>Free Shipping</h3>
+                    <p style="color: var(--text-light);">Orders above ₹999</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎁</div>
+                    <h3>Gift Wrapping</h3>
+                    <p style="color: var(--text-light);">Available</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+                    <h3>Secure Payment</h3>
+                    <p style="color: var(--text-light);">100% Protected</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
+                    <h3>24/7 Support</h3>
+                    <p style="color: var(--text-light);">Help Center</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Giftess. Premium Customised Gift Hampers.</p>
+            <div class="footer-links">
+                <a href="/about.html" class="footer-link">About Us</a>
+                <a href="/contact.html" class="footer-link">Contact</a>
+                <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="/terms.html" class="footer-link">Terms of Service</a>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #999;">
+                Made with ❤️ in India | Follow us @gif_tess
+            </p>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Shopping Cart</h2>
+                <button class="modal-close" onclick="hideCart()">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="cart-empty" class="empty-state" style="display: none;">
+                    <p>Your cart is empty</p>
+                    <button class="btn btn-primary" onclick="hideCart()" style="margin-top: 1rem;">
+                        Continue Shopping
+                    </button>
+                </div>
+                
+                <div id="cart-items"></div>
+                
+                <div id="cart-footer" style="display: none;">
+                    <div class="cart-summary">
+                        <div class="cart-summary-row">
+                            <span>Subtotal:</span>
+                            <span id="cart-subtotal">₹0</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Shipping:</span>
+                            <span id="cart-shipping">₹0</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Tax:</span>
+                            <span id="cart-tax">₹0</span>
+                        </div>
+                        <div class="cart-summary-row total">
+                            <span>Total:</span>
+                            <span id="cart-total">₹0</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="proceedToCheckout()" style="width: 100%; margin-top: 1rem;">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login/Register Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Login / Register</h2>
+                <button class="modal-close" onclick="hideLogin()">×</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Login Form -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Login</h3>
+                        <form onsubmit="handleLogin(event)">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="login-email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" id="login-password" class="form-input" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                Login
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Register Form -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Register</h3>
+                        <form onsubmit="handleRegister(event)">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="register-email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" id="register-password" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" id="register-confirm-password" class="form-input" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                Register
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/store.js"></script>
+</body>
+</html>

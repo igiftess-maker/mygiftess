@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Giftess</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>giftess</h2>
+                <p>Admin Panel</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="sidebar-item active" data-view="dashboard" onclick="showView('dashboard')">
+                    <span class="sidebar-icon">📊</span>
+                    <span>Dashboard</span>
+                </li>
+                <li class="sidebar-item" data-view="categories" onclick="showView('categories')">
+                    <span class="sidebar-icon">📂</span>
+                    <span>Categories</span>
+                </li>
+                <li class="sidebar-item" data-view="products" onclick="showView('products')">
+                    <span class="sidebar-icon">🎁</span>
+                    <span>Products</span>
+                </li>
+                <li class="sidebar-item" data-view="orders" onclick="showView('orders')">
+                    <span class="sidebar-icon">📦</span>
+                    <span>Orders</span>
+                </li>
+                <li class="sidebar-item" data-view="settings" onclick="showView('settings')">
+                    <span class="sidebar-icon">⚙️</span>
+                    <span>Settings</span>
+                </li>
+            </ul>
+            
+            <div class="sidebar-user">
+                <p id="admin-user-email">admin@giftess.com</p>
+                <button id="admin-logout" class="btn-logout">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="admin-view active">
+                <div class="admin-header">
+                    <h1>Dashboard</h1>
+                </div>
+                
+                <div id="dashboard-stats" class="stats-grid">
+                    <!-- Stats will be loaded dynamically -->
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Recent Orders</h2>
+                    </div>
+                    <div id="dashboard-recent-orders">
+                        <!-- Recent orders will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories View -->
+            <div id="view-categories" class="admin-view">
+                <div class="admin-header">
+                    <h1>Categories Management</h1>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">All Categories</h2>
+                        <button class="admin-btn admin-btn-primary" onclick="showCategoryModal()">
+                            + Add Category
+                        </button>
+                    </div>
+                    <div id="categories-list">
+                        <!-- Categories table will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products View -->
+            <div id="view-products" class="admin-view">
+                <div class="admin-header">
+                    <h1>Products Management</h1>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">All Products</h2>
+                        <button class="admin-btn admin-btn-primary" onclick="showProductModal()">
+                            + Add Product
+                        </button>
+                    </div>
+                    <div id="products-list">
+                        <!-- Products table will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders View -->
+            <div id="view-orders" class="admin-view">
+                <div class="admin-header">
+                    <h1>Orders Management</h1>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">All Orders</h2>
+                    </div>
+                    <div id="orders-list">
+                        <!-- Orders table will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="view-settings" class="admin-view">
+                <div class="admin-header">
+                    <h1>Settings</h1>
+                </div>
+                
+                <!-- Store Settings -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Store Settings</h2>
+                    </div>
+                    <form id="store-settings-form" onsubmit="saveStoreSettings(event)">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">WhatsApp Number (with country code)</label>
+                            <input type="text" id="store-wa-number" class="admin-form-input" placeholder="916002698296" required>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Shipping Fee (₹)</label>
+                            <input type="number" id="store-shipping-fee" class="admin-form-input" required>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Free Shipping Minimum (₹)</label>
+                            <input type="number" id="store-free-shipping" class="admin-form-input" required>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="store-tax-enabled">
+                                <span>Enable Tax</span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Tax Percentage (%)</label>
+                            <input type="number" id="store-tax-percent" class="admin-form-input" min="0" max="100">
+                        </div>
+                        
+                        <button type="submit" class="admin-btn admin-btn-success">
+                            Save Store Settings
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Hero Settings -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Hero Section Settings</h2>
+                    </div>
+                    <form id="hero-settings-form" onsubmit="saveHeroSettings(event)">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Hero Title</label>
+                            <input type="text" id="hero-title" class="admin-form-input" required>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Hero Subtitle</label>
+                            <input type="text" id="hero-subtitle" class="admin-form-input" required>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Button 1 Text</label>
+                            <input type="text" id="hero-btn1" class="admin-form-input" required>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Button 2 Text</label>
+                            <input type="text" id="hero-btn2" class="admin-form-input" required>
+                        </div>
+                        
+                        <button type="submit" class="admin-btn admin-btn-success">
+                            Save Hero Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="category-modal-title" class="modal-title">Add Category</h2>
+                <button class="modal-close" onclick="hideModal('category-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="category-form" onsubmit="saveCategoryForm(event)">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Name *</label>
+                        <input type="text" id="category-name" class="admin-form-input" required>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Slug * (lowercase, no spaces)</label>
+                        <input type="text" id="category-slug" class="admin-form-input" required>
+                        <small style="color: var(--admin-text-light);">Used in URLs. e.g., "birthday-hampers"</small>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Emoji (optional)</label>
+                        <input type="text" id="category-emoji" class="admin-form-input" placeholder="🎁">
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Photo URL</label>
+                        <input type="url" id="category-photo" class="admin-form-input" placeholder="https://...">
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Display Order</label>
+                        <input type="number" id="category-order" class="admin-form-input" value="0" required>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Status</label>
+                        <select id="category-status" class="admin-form-input" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="admin-btn admin-btn-primary">
+                        Save Category
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="product-modal-title" class="modal-title">Add Product</h2>
+                <button class="modal-close" onclick="hideModal('product-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="product-form" onsubmit="saveProductForm(event)">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Product Name *</label>
+                        <input type="text" id="product-name" class="admin-form-input" required>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Description</label>
+                        <textarea id="product-description" class="admin-form-input"></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Category *</label>
+                        <select id="product-category" class="admin-form-input" required>
+                            <!-- Categories will be populated dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Sale Price (₹) *</label>
+                        <input type="number" id="product-price-sale" class="admin-form-input" required>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Old Price (₹) - Optional</label>
+                        <input type="number" id="product-price-old" class="admin-form-input">
+                        <small style="color: var(--admin-text-light);">Leave empty if no discount</small>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Photo URLs (one per line)</label>
+                        <textarea id="product-photos" class="admin-form-input" placeholder="https://example.com/image1.jpg
+https://example.com/image2.jpg"></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="form-checkbox">
+                            <input type="checkbox" id="product-featured">
+                            <span>Featured Product</span>
+                        </label>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Status</label>
+                        <select id="product-status" class="admin-form-input" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="admin-btn admin-btn-primary">
+                        Save Product
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="order-details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Order Details</h2>
+                <button class="modal-close" onclick="hideModal('order-details-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="order-details-content">
+                    <!-- Order details will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
