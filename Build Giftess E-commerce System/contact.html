@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Giftess</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        .contact-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            background: var(--bg-gray);
+            padding: 2rem;
+            border-radius: var(--radius);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .contact-form-card {
+            background: var(--bg);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">giftess</a>
+            
+            <nav class="nav">
+                <a href="/#categories" class="nav-link">Categories</a>
+                <a href="/#products" class="nav-link">Products</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="icon-btn" onclick="window.location.href='/'">
+                    🏠
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="contact-container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--secondary);">Get In Touch</h1>
+            <p style="font-size: 1.1rem; color: var(--text-light);">
+                We process orders 7 days a week, 9 AM - 9 PM IST
+            </p>
+        </div>
+
+        <div class="contact-grid">
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h2 style="margin-bottom: 2rem;">Contact Information</h2>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem;">WhatsApp</h3>
+                        <a href="https://wa.me/916002698296" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 1.1rem;">
+                            +91 6002698296
+                        </a>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem;">
+                            Click to chat with us
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📷</div>
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem;">Instagram</h3>
+                        <a href="https://instagram.com/gif_tess" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 1.1rem;">
+                            @gif_tess
+                        </a>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem;">
+                            Follow us for updates
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📦</div>
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem;">Orders</h3>
+                        <p style="color: var(--text); font-size: 1rem;">
+                            We process orders 7 days a week
+                        </p>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem;">
+                            9 AM - 9 PM IST
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-card">
+                <h2 style="margin-bottom: 1.5rem;">Send a Message</h2>
+                
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label class="form-label">Your Name *</label>
+                        <input type="text" id="name" class="form-input" placeholder="Jane Doe" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone / WhatsApp *</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="6002698296" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Message *</label>
+                        <textarea id="message" class="form-input" rows="5" placeholder="Tell us about your gifting needs..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Send via WhatsApp
+                    </button>
+                </form>
+
+                <p style="text-align: center; color: var(--text-light); margin-top: 1rem; font-size: 0.85rem;">
+                    We typically respond within 2-3 hours during business hours
+                </p>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div style="margin-top: 4rem;">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Frequently Asked Questions</h2>
+            
+            <div style="display: grid; gap: 1.5rem;">
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">What are your delivery areas?</h3>
+                    <p style="color: var(--text-light);">
+                        We deliver across India. Delivery time varies by location (typically 3-7 business days).
+                    </p>
+                </div>
+                
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Do you offer gift wrapping?</h3>
+                    <p style="color: var(--text-light);">
+                        Yes! All our products come with premium gift wrapping at no extra cost.
+                    </p>
+                </div>
+                
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Can I customize my hamper?</h3>
+                    <p style="color: var(--text-light);">
+                        Absolutely! Contact us via WhatsApp with your requirements and we'll create a personalized hamper for you.
+                    </p>
+                </div>
+                
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">What payment methods do you accept?</h3>
+                    <p style="color: var(--text-light);">
+                        We accept UPI, bank transfer, and cash on delivery. Payment details will be shared via WhatsApp after order confirmation.
+                    </p>
+                </div>
+                
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">What is your return policy?</h3>
+                    <p style="color: var(--text-light);">
+                        We offer returns within 7 days of delivery for damaged or defective items. Contact us immediately if you face any issues.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Hours -->
+        <div style="background: var(--primary-light); padding: 2rem; border-radius: var(--radius); margin-top: 3rem; text-align: center;">
+            <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Business Hours</h3>
+            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">Monday - Sunday</p>
+            <p style="font-size: 1.3rem; font-weight: 600; color: var(--primary);">9:00 AM - 9:00 PM IST</p>
+            <p style="color: var(--text-light); margin-top: 1rem; font-size: 0.9rem;">
+                Messages received outside business hours will be responded to on the next business day
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="margin-top: 4rem;">
+        <div class="footer-content">
+            <p>&copy; 2026 Giftess. Premium Customised Gift Hampers.</p>
+            <div class="footer-links">
+                <a href="/" class="footer-link">Home</a>
+                <a href="/#products" class="footer-link">Products</a>
+                <a href="/contact.html" class="footer-link">Contact</a>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #999;">
+                Made with ❤️ in India | Follow us @gif_tess
+            </p>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
+    <script>
+        // Load store settings to get WhatsApp number
+        let waNumber = '916002698296';
+
+        async function loadWANumber() {
+            try {
+                const { data } = await supabase
+                    .from('store_settings')
+                    .select('wa_number')
+                    .eq('id', 1)
+                    .single();
+                
+                if (data) waNumber = data.wa_number;
+            } catch (error) {
+                console.error('Error loading WA number:', error);
+            }
+        }
+
+        // Handle contact form
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+
+            // Validate phone
+            if (!isValidPhone(phone)) {
+                showToast('Please enter a valid 10-digit phone number', 'error');
+                return;
+            }
+
+            // Format WhatsApp message
+            const waMessage = `*Contact Form Inquiry*\n\n*Name:* ${name}\n*Phone:* ${phone}\n\n*Message:*\n${message}`;
+            const encodedMessage = encodeURIComponent(waMessage);
+            const waUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
+
+            // Open WhatsApp
+            window.open(waUrl, '_blank');
+
+            // Show success message
+            showToast('Redirecting to WhatsApp...', 'success');
+
+            // Reset form
+            setTimeout(() => {
+                document.getElementById('contact-form').reset();
+            }, 1000);
+        });
+
+        // Initialize
+        loadWANumber();
+    </script>
+</body>
+</html>
