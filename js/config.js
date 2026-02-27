@@ -5,7 +5,7 @@
  */
 
 // Supabase Configuration
-const SUPABASE_URL = 'https://odeoapnzrwdafemljqko.supabase.co';
+const SUPABASE_URL = 'https://xlthbshztxfxhxvwequi.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsdGhic2h6dHhmeGh4dndlcXVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDQwNTgsImV4cCI6MjA4NzYyMDA1OH0.c1wRdu32y0hCTuYEglVRuiY_nQwRFQrrH4vVjCYNkOM';
 
 // Initialize Supabase client (singleton)
